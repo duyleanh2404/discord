@@ -44,7 +44,10 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
               Invite people
               <UserPlus className="h-4 w-4 ml-auto text-indigo-600 dark:text-indigo-400" />
             </DropdownMenuItem>
-            <DropdownMenuItem className="group px-3 py-2 text-sm cursor-pointer">
+            <DropdownMenuItem
+              onClick={() => onOpen('createChannel')}
+              className="group px-3 py-2 text-sm cursor-pointer"
+            >
               Create channel
               <PlusCircle className="h-4 w-4 ml-auto group-hover:text-white" />
             </DropdownMenuItem>
