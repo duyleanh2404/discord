@@ -6,6 +6,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { ModalProvder } from '@/components/providers/modal-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -43,6 +44,7 @@ export default function RootLayout({
             defaultTheme="dark"
             storageKey="discord-theme"
           >
+            <ModalProvder />
             {children}
           </ThemeProvider>
         </body>
