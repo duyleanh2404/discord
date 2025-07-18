@@ -1,5 +1,8 @@
 'use client';
 
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,6 +25,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { FileUpload } from '@/components/file-upload';
+import { Loader } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -33,6 +38,8 @@ const formSchema = z.object({
 });
 
 export const InitialModal = () => {
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,7 +51,14 @@ export const InitialModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      await axios.post('/api/servers', values);
+      form.reset();
+      router.refresh();
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -61,14 +75,30 @@ export const InitialModal = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
-              <div className="flex items-center justify-center text-center">TODO: Image upload</div>
+              <FormField
+                control={form.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="flex items-center justify-center">
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                    <FormLabel className="text-xs font-bold text-zinc-500 dark:text-secondary/70">
                       Server name
                     </FormLabel>
                     <FormControl>
@@ -87,6 +117,7 @@ export const InitialModal = () => {
 
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button disabled={isLoading} variant="primary">
+                {isLoading && <Loader className="size-4 animate-spin" />}
                 Create
               </Button>
             </DialogFooter>
