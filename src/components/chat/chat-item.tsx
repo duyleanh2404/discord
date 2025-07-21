@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Edit, FileIcon, Loader, ShieldAlert, ShieldCheck, Trash } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useModal } from '@/hooks/use-modal-store';
 import { Member, MemberRole, Profile } from '@prisma/client';
 
 import { UserAvatar } from '@/components/user-avatar';
@@ -21,7 +22,6 @@ import { ActionTooltip } from '@/components/action-tooltip';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { useModal } from '@/hooks/use-modal-store';
 
 interface ChatItemProps {
   id: string;
